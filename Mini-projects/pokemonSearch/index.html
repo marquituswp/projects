@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Search Api</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <h1>POKEMON SEARCH</h1>
+    <div id="container">
+        <input type="text" id="search" placeholder="Search for a pokemon">
+        <button id="searchBtn" onclick="fetchPokemon()">Search</button>
+    </div>
+    <div id="pokemonContainer">
+        <div id="pokemon">
+            <img id="pokeImg" alt="Pokemon Sprite">
+            <div id="pokemonInfo">
+                <h2 id="pokeName"></h2>
+                <p id="pokeType"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
