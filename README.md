@@ -16,7 +16,7 @@
 
 ## Mini Projects
 
-A variety of simple projects showcasing HTML, CSS, and JavaScript learning endeavors.
+- A variety of simple projects showcasing HTML, CSS, and JavaScript learning endeavors.
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white&labelColor=101010)]()
 [![HTML5](https://img.shields.io/badge/HTML5-999999?style=for-the-badge&logo=HTML5&logoColor=white&labelColor=101010)]()
