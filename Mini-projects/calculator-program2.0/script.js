@@ -23,3 +23,9 @@ botonC.addEventListener('click', () => {
 botonDelete.addEventListener('click', () => {
     display.borrar();
 });
+
+botonesOperadores.forEach(boton => {
+    boton.addEventListener('click', () => {
+        display.computar(boton.value);
+    });
+});
