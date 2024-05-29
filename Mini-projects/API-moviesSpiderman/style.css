@@ -1,0 +1,61 @@
+body{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #0f0c29;
+    color: aliceblue;
+}
+
+h1{
+    background-color: hsl(5, 88%, 53%);
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+    border-radius: 5px;
+    box-shadow: 2px 0cqi 3px 2px hsl(5, 88%, 83%);
+}
+
+#container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#container div{
+    flex: 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 8px;
+    padding: 13px;
+    background-color: #21187727;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#container div img{
+    box-shadow: 20px 10px 6px -6px rgba(6, 4, 12, 0.801);
+    max-width: 300px;
+    height: 450px;
+    border-radius: 5px;
+    transition: transform 0.5s ease;
+}
+
+#container div img:hover{
+    transform: scale(1.1);
+}   
+
+#container div h2{
+    margin-top: 25px;
+    font-size: 1.5em;
+    background-color: hsl(5, 88%, 53%);
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3px;
+    border-radius: 15px;
+}
+
+#container div small{
+    margin-top: 10px;
+    font-size: 1.2em;
+}
