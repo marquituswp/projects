@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahorcado Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="http://fonts.cdnfonts.com/css/sf-pixelate">
+</head>
+<body>
+    
+    <h1>Ahorcado Pixel</h1>
+    <div id="container">
+        <div>
+            <canvas id="canvas"></canvas>
+            <div id="usedLetters"></div>
+        </div>
+        <div id="wordContainer"></div>
+        <button id="startBtn">START</button>
+        <div id="message"></div>
+    </div>
+
+    <div id="score">
+        <h2>Score</h2>
+        <p>Wins: <span id="wins">0</span></p>
+        <p>Losses: <span id="losses">0</span></p>
+    </div>
+
+    <div id="instructions">
+        <h2>Instructions</h2>
+        <p>Guess the word by selecting the letters. You have 6 attempts to guess the word.</p>
+        <p>PRESS START TO BEGIN</p>
+    </div>
+    
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>
