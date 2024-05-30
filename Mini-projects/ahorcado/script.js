@@ -162,7 +162,7 @@ const startGame = ()=>{
     mistakes = 0;
     hits = 0;
     pista.style.display = 'block';
-    numPistas.innerHTML = `Pistas disponibles <span id="pistaCounter">1</span>`;
+    numPistas.innerHTML = `Available hints <span id="pistaCounter">1</span>`;
     pistaText.innerHTML = '';
     Message.innerHTML = '';
     correctWord.innerHTML = '';
