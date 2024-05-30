@@ -19,6 +19,7 @@ let ctx = canvas.getContext('2d');
 ctx.canvas.width = 0;
 ctx.canvas.height = 0;
 pista.style.display = 'none';
+score.style.display = 'none';
 
 
 const bodyParts = [
@@ -162,6 +163,7 @@ const startGame = ()=>{
     mistakes = 0;
     hits = 0;
     pista.style.display = 'block';
+    score.style.display = 'block';
     numPistas.innerHTML = `Available hints <span id="pistaCounter">1</span>`;
     pistaText.innerHTML = '';
     Message.innerHTML = '';
