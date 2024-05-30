@@ -4,15 +4,22 @@ const wordContainer = document.getElementById('wordContainer');
 const startBtn = document.getElementById('startBtn');
 const usedLetters = document.getElementById('usedLetters');
 const Message = document.getElementById('message');
+const correctWord = document.getElementById('correctWord');
 const isntructions = document.getElementById('instructions');
 const score = document.getElementById('score');
 const wins = document.getElementById('wins');
 const loses = document.getElementById('losses');
+const pistaText = document.getElementById('pistaText');
+const pista = document.getElementById('pista');
+const pistaBtn = document.getElementById('pistaBtn');
+const numPistas = document.getElementById('numPistas');
 
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 ctx.canvas.width = 0;
 ctx.canvas.height = 0;
+pista.style.display = 'none';
+
 
 const bodyParts = [
     [4,2,1,1],
@@ -27,6 +34,7 @@ let selectedWord;
 let usedLettersArray;
 let mistakes;
 let hits;
+let pistas;
 let winscount = 0;
 let losescount = 0;
 
@@ -54,6 +62,7 @@ const endGame = ()=>{
     startBtn.addEventListener('click', startGame);
     if(mistakes === bodyParts.length){
         Message.innerHTML = 'You lose';
+        correctWord.innerHTML = `The word was: ${selectedWord.join('')}`;
         Message.classList.add('lose');
         losescount++;
         loses.innerHTML = `${losescount}`;
@@ -85,6 +94,9 @@ const correctLetter = (letter)=>{
             children[i].classList.toggle('hidden');
             hits++;
         }
+    }
+    if (letter === pistaText.innerHTML){
+        pistaText.innerHTML = '';
     }
     if(hits === selectedWord.length) endGame();
 }
@@ -145,12 +157,18 @@ const drawWord = ()=>{
 }
 
 const startGame = ()=>{
+    pistas = 1;
     usedLettersArray = [];
     mistakes = 0;
     hits = 0;
+    pista.style.display = 'block';
+    numPistas.innerHTML = `Pistas disponibles <span id="pistaCounter">1</span>`;
+    pistaText.innerHTML = '';
     Message.innerHTML = '';
+    correctWord.innerHTML = '';
     wordContainer.innerHTML = '';
     usedLetters.innerHTML = '';
+    pistaBtn.id = 'pistaBtn';
     startBtn.innerHTML = 'START';
     startBtn.removeEventListener('click', startGame);
     startBtn.id = 'startBtnInactive';
@@ -163,4 +181,21 @@ const startGame = ()=>{
     document.addEventListener('keydown', checkLetter);
 }
 
+const showPista = ()=>{
+    const pistaCounter = document.getElementById('pistaCounter');
+    if(pistas > 0){
+        pistaCounter.innerHTML = `${--pistas}`;
+        var randomPista = selectedWord[Math.floor(Math.random()*selectedWord.length)];
+        while(usedLettersArray.includes(randomPista)){
+            randomPista = selectedWord[Math.floor(Math.random()*selectedWord.length)];
+        }
+        pistaText.innerHTML = randomPista;
+    }
+    if(pistas === 0){
+        pistaBtn.id = 'pistaBtnInactive';
+        numPistas.innerHTML = '';
+    }
+}
+
 startBtn.addEventListener('click', startGame);
+pistaBtn.addEventListener('click', showPista);
