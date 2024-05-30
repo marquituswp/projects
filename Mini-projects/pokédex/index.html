@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <form id="formPokemon" action="">
+        <input type="text" name="pokemon" autocomplete="off">
+    </form> 
+    <div data-poke-card class="poke-card">
+        <div data-poke-name>Pokédex</div>
+        <div data-poke-img-container class="img-container">
+            <img data-poke-img src="img/poke-shadow.png" class="poke-img">
+        </div>
+        <div data-poke-id></div>
+        <div data-poke-types class="poke-types"></div>
+        <div data-poke-stats class="poke-stats"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
