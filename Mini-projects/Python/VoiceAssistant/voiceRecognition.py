@@ -8,42 +8,59 @@
 import speech_recognition as sr
 import webbrowser
 import pyttsx3
-
-recognizer = sr.Recognizer()
-
-engine = pyttsx3.init()
-
+import time
 
 def talk():
 
-    mic = sr.Microphone()
-    with mic as source:
+    
+    print('Escuchando...')
+    with sr.Microphone() as source:
 
         audio = recognizer.listen(source)
-
+        
     try:
-
-        text = recognizer.recognize_google(audio,language = 'ES')
-    
+        print('Reconociendo...')
+        text = recognizer.recognize_google(audio, language='es-ES')
+        print(f'Has dicho: {text}')
     except sr.UnknownValueError:
             print("Sorry, I did not understand that.")
             return ""
     except sr.RequestError:
         print("Sorry, my speech service is down.")
         return ""
-
-    print(f'Me has dicho: {text}')
     return text.lower()
 
-if 'amazon' in talk():
+if __name__ == '__main__':
+    recognizer = sr.Recognizer()
+    engine = pyttsx3.init()
+    engine.setProperty('rate', 150)
     
-    engine.say('Qué quieres comprar en amazon')
+    while True:
+        engine.say('Hola, ¿en qué puedo ayudarte?')
+        engine.runAndWait()
+        if 'amazon' in talk():
+            
+            engine.say('Qué quieres comprar en amazon')
 
-    engine.runAndWait()
-    text = talk()
-    print(f'Me has dicho: {text}')
-    try:
-        webbrowser.open(f'https://www.amazon.es/s?k={text}')
+            engine.runAndWait()
 
-    except Exception as e:
-        print(e)
+            
+            text = talk()
+            try:
+                engine.say(f'Buscando {text} en amazon')
+                engine.runAndWait()
+                webbrowser.open(f'https://www.amazon.es/s?k={text}')
+                
+                time.sleep(3)
+                engine.say('¿Puedo ayudarte en algo más?')
+                engine.runAndWait()
+
+
+                text = talk()
+                if 'no' in text:
+                    engine.say('Hasta luego')
+                    engine.runAndWait()
+                    break
+            except Exception as e:
+                print(e)
+
