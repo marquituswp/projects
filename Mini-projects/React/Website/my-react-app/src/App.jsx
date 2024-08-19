@@ -2,6 +2,10 @@ import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import Food from './Food.jsx';
 import Card from './Card.jsx';
+// MODULE METHOD CSS
+import Button from './Button/Button.jsx';
+
+import Student from './Student.jsx';
 
 function App() {
   // return (
@@ -12,10 +16,19 @@ function App() {
   //     <Footer/>
   //   </>
   // );  
-  return(
+  // return(
+  //   <>
+  //     {/* <Card/>
+  //     <Card/> */}
+  //     <Button/>
+  //   </>
+  // );
+
+  return (
     <>
-      <Card/>
-      <Card/>
+      <Student name='Marcos' age={23} isStudent = {true}/>
+      <Student name='Luis' age={25} isStudent = {false}/>
+      <Student/>
     </>
   );
 }
