@@ -6,6 +6,7 @@ import Card from './Card.jsx';
 import Button from './Button/Button.jsx';
 
 import Student from './Student.jsx';
+import UserGreeting from './User.jsx';
 
 function App() {
   // return (
@@ -24,13 +25,21 @@ function App() {
   //   </>
   // );
 
+  // return (
+  //   <>
+  //     <Student name='Marcos' age={23} isStudent = {true}/>
+  //     <Student name='Luis' age={25} isStudent = {false}/>
+  //     <Student/>
+  //   </>
+  // );
+
   return (
     <>
-      <Student name='Marcos' age={23} isStudent = {true}/>
-      <Student name='Luis' age={25} isStudent = {false}/>
-      <Student/>
+      <UserGreeting isLoggedIn={true} username='Marcos'/>
+      <UserGreeting isLoggedIn={false} username='Marta'/>
+      <UserGreeting />
     </>
-  );
+  )
 }
 
 export default App
