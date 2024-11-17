@@ -1,8 +1,8 @@
 // Rutas de usuarios
 const express = require("express")
 const router = express.Router()
-const {getUsers,modifyUsers,deleteUser,modifyUserRole} = require("../controllers/users")
-const {validateUpdateUser,validateDeleteUser,validateUpdateRole,validateGetWeb,validateReviewMovie} = require("../validators/users")
+const {getUsers,modifyUsers,deleteUser,modifyUserRole,reviewMovie} = require("../controllers/users")
+const {validateUpdateUser,validateDeleteUser,validateUpdateRole,validateReviewMovie} = require("../validators/users")
 // Importamos el middleware de autenticación de usuario, para proteger las rutas
 const {authUser} = require("../middlewares/session")
 // Importamos el middleware de comprobación de roles de usuario, SOLO ADMIN puede cambiar roles
@@ -31,49 +31,6 @@ const checkRolUser = require("../middlewares/rol")
 *                           $ref: "#/components/schemas/Errors/User"
 */
 router.get("/",getUsers)
-
-// /**
-// *   @openapi
-// *   /users/web/{city}/{interests}?:
-// *   get:
-// *       tags:
-// *       - Users
-// *       summary: Get all Web in the User city
-// *       parameters:
-// *           - in: path
-// *             name: city
-// *             schema: 
-// *                type: string
-// *             required: true
-// *             description: The city of the Webs
-// *           - in: path
-// *             name: interests
-// *             schema: 
-// *                type: string
-// *             required: false
-// *             description: The interests of the Webs
-// *           - in: query
-// *             name: order
-// *             schema:
-// *               type: string
-// *               enum: ["true","false"]
-// *             required: true
-// *             description: Choose "true" to sort Webs by scoring 
-// *       responses:
-// *           '200':
-// *               description: Return a list of Webs
-// *               content:
-// *                   application/json:
-// *                       schema:
-// *                           $ref: "#/components/schemas/Web"
-// *           '403':
-// *               description: Error getting Webs in the city
-// *               content:
-// *                   application/json:
-// *                       schema:
-// *                           $ref: "#/components/schemas/Errors/UserWeb"
-// */
-// router.get("/web/:city/:interests?",validateGetWeb,getWebCity)
 
 // RUTA PUT /users/role
 /**
@@ -209,48 +166,48 @@ router.put("/:id",authUser,validateUpdateUser,modifyUsers)
 */
 router.delete("/:id",authUser,validateDeleteUser,deleteUser)
 
-// // RUTA PUT /users/reviewWeb/{webId}
-// /**
-// *   @openapi
-// *   /users/reviewWeb/{webId}:
-// *   put:
-// *       tags:
-// *       - Users
-// *       summary: Review a Web
-// *       security:
-// *           - bearerAuth: []
-// *       parameters:
-// *           - in: path
-// *             name: webId
-// *             schema: 
-// *                type: string
-// *             required: true
-// *             description: The ID of the web want to review
-// *       requestBody:
-// *           content:
-// *               application/json:
-// *                   schema:
-// *                       $ref: "#/components/schemas/User/reviewWeb"
-// *       responses:
-// *           '200':
-// *               description: Return a success message and the web reviewed
-// *               content:
-// *                   application/json:
-// *                       schema:
-// *                           $ref: "#/components/schemas/User/UserReviewWeb"
-// *           '403':
-// *               description: Error reviewing Web
-// *               content:
-// *                   application/json:
-// *                       schema:
-// *                           $ref: "#/components/schemas/Errors/UserReviewWeb"
-// *           '404':
-// *               description: Error checking the role
-// *               content:
-// *                   application/json:
-// *                       schema:
-// *                           $ref: "#/components/schemas/Errors/NotToken"
-// */
-// router.put("/reviewWeb/:webId",authUser,validateReviewMovie, reviewWeb)
+// RUTA PUT /users/reviewWeb/{webId}
+/**
+*   @openapi
+*   /users/reviewMovie/{MovieId}:
+*   put:
+*       tags:
+*       - Users
+*       summary: Review a Movie
+*       security:
+*           - bearerAuth: []
+*       parameters:
+*           - in: path
+*             name: MovieId
+*             schema: 
+*                type: string
+*             required: true
+*             description: The ID of the Movie want to review
+*       requestBody:
+*           content:
+*               application/json:
+*                   schema:
+*                       $ref: "#/components/schemas/User/reviewMovie"
+*       responses:
+*           '200':
+*               description: Return a success message and the Movie reviewed
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: "#/components/schemas/User/UserReviewMovie"
+*           '403':
+*               description: Error reviewing movie
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: "#/components/schemas/Errors/UserReviewMovie"
+*           '404':
+*               description: Error checking the role
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: "#/components/schemas/Errors/NotToken"
+*/
+router.put("/reviewMovie/:MovieId",authUser,validateReviewMovie, reviewMovie)
 
 module.exports = router

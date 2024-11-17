@@ -47,7 +47,6 @@ const validateGetWeb = [
 const validateReviewMovie =[
     check("MovieId").exists().notEmpty().isMongoId(),
     check("scoring").exists().notEmpty().isNumeric().custom(value => value >= 0 && value <= 5),
-    check("points").exists().notEmpty().isNumeric(),
     check("review").exists().notEmpty(),
     (req, res, next) => {
         return validateResults(req, res, next)

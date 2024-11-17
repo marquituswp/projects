@@ -39,7 +39,12 @@ const movieSchema = new mongoose.Schema(
               ]
         },
         poster:{
-            type:String
+            type:String,
+            default:""
+        },
+        points:{
+            type:Number,
+            default:0
         },
         reviews:{
             type:[Object],
@@ -47,13 +52,14 @@ const movieSchema = new mongoose.Schema(
                 scoring:{
                     type:Number
                 },
-                points:{
-                    type:Number
-                },
                 review:{
                     type:String
                 }
             }
+        },
+        isFavorite:{
+            type:Boolean,
+            default: false
         }
     },
     {

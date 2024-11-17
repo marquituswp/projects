@@ -44,7 +44,6 @@ const loginUser = async(req,res)=>{
             token: await tokenSign(user),
             user: user
         }
-        console.log(data)
         res.status(200).send(data)
 
     }catch{

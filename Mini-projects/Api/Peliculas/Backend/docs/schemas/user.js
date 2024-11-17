@@ -45,13 +45,9 @@ module.exports = {
     // Esquema para crear un comentario en una web
     reviewMovie:{
         type:"object",
-        required:["scoring","points","review"],
+        required:["scoring","review"],
         properties:{
             scoring:{
-                type:"number",
-                example: 3
-            },
-            points:{
                 type:"number",
                 example: 3
             },
@@ -112,49 +108,41 @@ module.exports = {
             }
         }
     },
-    UserReviewWeb:{
+    UserReviewMovie:{
         type:"object",
         properties:{
             message:{
                 type:"string",
-                example:"Web Reviewed"
-            },
-            message:{
-                type:"string",
-                example:"WEB_CREATED"
-            },
-            city:{
-                type:"string",
-                example:"Madrid"
-            },
-            activity:{
-                type:"string",
-                example:"Running"
+                example:"Movie Reviewed"
             },
             title:{
                 type:"string",
-                example:"Running in Madrid"
+                example:"Spiderman 1"
             },
-            summary:{
+            date:{
+                type:"date",
+                example:"2002-06-21"
+            },
+            actors:{
+                type:"array",
+                example:["Tobey Maguire","James Franco"]
+            },
+            poster:{
                 type:"string",
-                example:"Running in Madrid is a great experience"
+                example:""
             },
-            texts:{
+            filmGenre:{
                 type:"array",
-                example:["Madrid is a great city"]
+                example:["Superhero"]
             },
-            images:{
-                type:"array",
-                example:["madrid.jpg"]
+            points:{
+                type:"number",
+                example: 1
             },
             reviews:{
                 type:"object",
                 properties:{
                     scoring:{
-                        type:"number",
-                        example: 3
-                    },
-                    points:{
                         type:"number",
                         example: 3
                     },
