@@ -11,6 +11,19 @@ const validateGetMovies = [
     validateResults
 ]
 
+const validateGetMovie = [
+    check("id").exists().notEmpty().isMongoId(),
+
+    validateResults
+]
+
+const validetSetFavorite = [
+    check("id").exists().notEmpty().isMongoId(),
+    check("isFavorite").exists().notEmpty().isBoolean(),
+
+    validateResults
+]
+
 const validateCreateMovie = [
     check("title").exists().notEmpty().customSanitizer((value) => {
         return value
@@ -62,4 +75,4 @@ const validatorRestoreMovie = [
 ]
 
 
-module.exports = {validateCreateMovie,validateGetMovies,validatorDeleteMovie,validatorUploadImage,validatorRestoreMovie}
+module.exports = {validateCreateMovie,validateGetMovies,validatorDeleteMovie,validatorUploadImage,validatorRestoreMovie, validateGetMovie, validetSetFavorite}

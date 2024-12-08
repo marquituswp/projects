@@ -3,6 +3,7 @@ const { matchedData } = require("express-validator")
 const { handleHttpError } = require("../utils/handleError")
 const { uploadToPinata } = require("../utils/handleUploadIPFS")
 const stringSimilarity = require("string-similarity")
+
 const getMovies = async (req, res) => {
     try {
         const { date, actor, genre, order, minScoring } = matchedData(req)
@@ -15,7 +16,7 @@ const getMovies = async (req, res) => {
         if (actor) {
             filters.actors = { $regex: new RegExp(actor, "i") }
         }
-    
+
         if (genre) {
             filters.filmGenre = { $in: [genre] }
         }
@@ -44,6 +45,49 @@ const getMovies = async (req, res) => {
     }
 }
 
+const getMovie = async (req, res) => {
+    try {
+        const { id } = matchedData(req)
+        const movie = await movieModel
+            .findById({ _id: id })
+        if (!movie) {
+            handleHttpError(res, "MOVIE_NOT_FOUND", 400)
+            return
+        }
+        res.status(200).send(movie)
+    } catch {
+        handleHttpError(res, "ERROR_GET_MOVIE", 403)
+    }
+}
+
+const getFavorites = async (req, res) => {
+    try {
+        const movies = await movieModel.find({ isFavorite: true })
+        if (movies.length === 0) {
+            handleHttpError(res, "NO_FAVORITES", 400)
+            return
+        }
+        res.status(200).send(movies)
+    } catch {
+        handleHttpError(res, "ERROR_GET_FAVORITES", 403)
+    }
+}
+
+const setFavorite = async (req, res) => {
+    try {
+        const { id } = matchedData(req)
+        const movie = await movieModel
+            .findByIdAndUpdate({ _id: id }, { isFavorite: true }, { new: true })
+        if (!movie) {
+            handleHttpError(res, "MOVIE_NOT_FOUND", 400)
+            return
+        }
+        res.status(200).send(movie)
+    } catch {
+        handleHttpError(res, "ERROR_SET_FAVORITE", 403)
+    }
+}
+
 const createMovie = async (req, res) => {
     try {
         const movie = matchedData(req)
@@ -55,7 +99,7 @@ const createMovie = async (req, res) => {
             return
         }
         const movieCreated = await movieModel.create(movie)
-        
+
 
         res.status(200).send(movieCreated)
     } catch {
@@ -63,74 +107,74 @@ const createMovie = async (req, res) => {
     }
 }
 
-const deleteMovie = async (req,res) =>{
+const deleteMovie = async (req, res) => {
 
-    try{
-        const {id} = matchedData(req)
+    try {
+        const { id } = matchedData(req)
         //Extraemos el tipo de eliminación
-        const {hard} = req.query
+        const { hard } = req.query
         const hardLowerCase = hard.toLowerCase()
-        const data = await movieModel.findById({_id:id})
+        const data = await movieModel.findById({ _id: id })
         //Si no existe la movie, lanzamos un error
-        if(!data){
-            handleHttpError(res,"MOVIE_NOT_FOUND",403)
+        if (!data) {
+            handleHttpError(res, "MOVIE_NOT_FOUND", 403)
             return
         }
-        
+
         if (hardLowerCase === "true") {
             // Elimino la movie de forma física
-            await movieModel.findOneAndDelete({_id:id}); 
-            res.status(200).json({message: "MOVIE_DELETED_PHISICALY"})
+            await movieModel.findOneAndDelete({ _id: id });
+            res.status(200).json({ message: "MOVIE_DELETED_PHISICALY" })
         }
-        else if (hardLowerCase==="false"){
+        else if (hardLowerCase === "false") {
             // Elimino la movie de forma lógica
-            await movieModel.delete({_id:id}); 
-            res.status(200).json({message: "MOVIE_DELETED_LOGICALY"});
-        } else if (!hardLowerCase){
+            await movieModel.delete({ _id: id });
+            res.status(200).json({ message: "MOVIE_DELETED_LOGICALY" });
+        } else if (!hardLowerCase) {
             //Si no se especifica el tipo de eliminación, lanzamos un error
-            handleHttpError(res,"NO_HARD_VALUE",403)
+            handleHttpError(res, "NO_HARD_VALUE", 403)
             return
-        } else{
+        } else {
             //Si el tipo de eliminación no es válido, lanzamos un error
-            handleHttpError(res,"INVALID_HARD_VALUE",403)
+            handleHttpError(res, "INVALID_HARD_VALUE", 403)
             return
         }
-    }catch(error){
-        handleHttpError(res,"ERROR_DELETE_movie",403)
+    } catch (error) {
+        handleHttpError(res, "ERROR_DELETE_movie", 403)
     }
-    
+
 }
 
 // Función para restaurar una movie
-const restoreMovie = async (req,res) =>{
-    try{
-        const {id} = matchedData(req)
+const restoreMovie = async (req, res) => {
+    try {
+        const { id } = matchedData(req)
         // Comprobamos si la movie ha sido eliminada
-        const data = await movieModel.findById({_id:id})
-        if(!data){
+        const data = await movieModel.findById({ _id: id })
+        if (!data) {
             // Si ha sido eliminada, la restauramos
-            const movieRestored = await movieModel.restore({_id:id})
-            const movie = await movieModel.findById({_id:id})
+            const movieRestored = await movieModel.restore({ _id: id })
+            const movie = await movieModel.findById({ _id: id })
             // Comprobamos si la movie ha sido restaurada
-            if(movieRestored.modifiedCount === 1){
+            if (movieRestored.modifiedCount === 1) {
                 // Si coincide, devolvemos la movie restaurada
-                res.status(200).json({message:"MOVIE_RESTORED", movie:movie})
+                res.status(200).json({ message: "MOVIE_RESTORED", movie: movie })
                 return
             }
-            handleHttpError(res,"MOVIE_NOT_EXISTENT",403)
+            handleHttpError(res, "MOVIE_NOT_EXISTENT", 403)
             return
         }
-        handleHttpError(res,"MOVIE_NOT_DELETED",403)
+        handleHttpError(res, "MOVIE_NOT_DELETED", 403)
         return
-    
-    }catch(error){
-        handleHttpError(res,"ERROR_RESTORE_MOVIE",403)
+
+    } catch (error) {
+        handleHttpError(res, "ERROR_RESTORE_MOVIE", 403)
     }
 }
 
 const updateImage = async (req, res) => {
     try {
-        const {id} = matchedData(req)
+        const { id } = matchedData(req)
         if (!movieModel.findById(id)) {
             handleHttpError(res, "MOVIE_NOT_FOUND", 400)
             return
@@ -140,13 +184,13 @@ const updateImage = async (req, res) => {
         const pinataResponse = await uploadToPinata(fileBuffer, fileName)
         const ipfsFile = pinataResponse.IpfsHash
         const ipfs = `https://${process.env.PINATA_GATEWAY_URL}/ipfs/${ipfsFile}`
-        const movie = await movieModel.findOneAndUpdate({_id: id }, {poster: ipfs}, {new: true})
-        res.status(200).json({message:"IMAGE_UPLOADED", movie:movie})
-    }catch(err) {
+        const movie = await movieModel.findOneAndUpdate({ _id: id }, { poster: ipfs }, { new: true })
+        res.status(200).json({ message: "IMAGE_UPLOADED", movie: movie })
+    } catch (err) {
         console.log(err)
         handleHttpError(res, "ERROR_UPLOAD_COMPANY_IMAGE")
     }
- }
- 
+}
 
-module.exports = { getMovies, createMovie,updateImage, deleteMovie, restoreMovie }
+
+module.exports = { getMovies, createMovie, updateImage, deleteMovie, restoreMovie, getFavorites, setFavorite, getMovie }

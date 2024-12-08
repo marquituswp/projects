@@ -1,9 +1,9 @@
 const express = require("express")
 const router = express.Router()
-const {getMovies,createMovie, updateImage, restoreMovie, deleteMovie} = require("../controllers/movie")
-const {validateGetMovies,validateCreateMovie,validatorUploadImage,validatorDeleteMovie,validatorRestoreMovie} = require("../validators/movie")
-const {authUser} = require("../middlewares/session")
-const {uploadMiddlewareMemory} = require("../utils/handleUpload")
+const { getMovies, createMovie, updateImage, restoreMovie, deleteMovie, setFavorite, getFavorites, getMovie } = require("../controllers/movie")
+const { validateGetMovies, validateCreateMovie, validatorUploadImage, validatorDeleteMovie, validatorRestoreMovie, validateGetMovie, validetSetFavorite } = require("../validators/movie")
+const { authUser } = require("../middlewares/session")
+const { uploadMiddlewareMemory } = require("../utils/handleUpload")
 // RUTA GET /users
 /**
 *   @openapi
@@ -57,8 +57,67 @@ const {uploadMiddlewareMemory} = require("../utils/handleUpload")
 *               schema:
 *                 $ref: "#/components/schemas/Errors/NoMovie"
 */
-router.get("/",validateGetMovies,getMovies)
+router.get("/", validateGetMovies, getMovies)
 
+// RUTA GET /movie/favorites
+/**
+*   @openapi
+*   /movie/favorites:
+*     get:
+*       tags:
+*       - Movies
+*       summary: Get the favorite Movies
+*       security:
+*           - bearerAuth: []
+*       responses:
+*         '200':
+*           description: Return a list of Movies
+*           content:
+*             application/json:
+*               schema:
+*                 $ref: "#/components/schemas/Movie"
+*         '400':
+*           description: Invalid parameters or data not found
+*           content:
+*             application/json:
+*               schema:
+*                 $ref: "#/components/schemas/Errors/NoMovie"
+*/
+router.get("/favorites", authUser, getFavorites)
+
+
+// RUTA GET /movie/{id}
+/**
+*   @openapi
+*   /movie/{id}:
+*     get:
+*       tags:
+*       - Movies
+*       summary: Get the Movie by ID
+*       parameters:
+*           - in: path
+*             name: id
+*             schema:
+*               type: string
+*             required: true
+*             description: The ID of the Movie
+*       responses:
+*         '200':
+*           description: Return a Movie
+*           content:
+*             application/json:
+*               schema:
+*                 $ref: "#/components/schemas/Movie"
+*         '400':
+*           description: Invalid parameters or data not found
+*           content:
+*             application/json:
+*               schema:
+*                 $ref: "#/components/schemas/Errors/NoMovie"
+*/
+router.get("/:id", validateGetMovie, getMovie)
+
+// RUTA POST /movie
 /**
 *   @openapi
 *   /movie:
@@ -87,7 +146,46 @@ router.get("/",validateGetMovies,getMovies)
 *                       schema:
 *                           $ref: "#/components/schemas/Errors/CreateMovie"
 */
-router.post("/",authUser,validateCreateMovie,createMovie)
+router.post("/", authUser, validateCreateMovie, createMovie)
+
+// RUTA PUT /movie/favorite/{id}
+/**
+*   @openapi
+*   /movie/favorite/{id}:
+*   put:
+*       tags:
+*       - Movies
+*       summary: Set a Movie as favorite
+*       security:
+*           - bearerAuth: []
+*       parameters:
+*           - in: path
+*             name: id
+*             schema:
+*               type: string
+*             required: true
+*             description: The ID of the Movie
+*           - in: query
+*             name: isFavorite
+*             schema:
+*               type: boolean
+*               required: true
+*               description: Set the Movie as favorite
+*       responses:
+*           '200':
+*               description: Return the Movie created
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: "#/components/schemas/Movie/MovieCreated"
+*           '403':
+*               description: Error getting Movie
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: "#/components/schemas/Errors/CreateMovie"
+*/
+router.put("/favorite/:id", authUser, validetSetFavorite, setFavorite)
 
 // RUTA DELETE /movie/{id}
 /**
@@ -133,7 +231,7 @@ router.post("/",authUser,validateCreateMovie,createMovie)
 *                       schema:
 *                           $ref: "#/components/schemas/Errors/NotToken"
 */
-router.delete("/:id",authUser,validatorDeleteMovie,deleteMovie)
+router.delete("/:id", authUser, validatorDeleteMovie, deleteMovie)
 
 // RUTA PATCH /movie/{id}
 /**
@@ -184,7 +282,7 @@ router.delete("/:id",authUser,validatorDeleteMovie,deleteMovie)
 *                       schema:
 *                           $ref: "#/components/schemas/Errors/NotToken"
 */
-router.patch("/:id", authUser,validatorUploadImage, uploadMiddlewareMemory.single("image"), updateImage)
+router.patch("/:id", authUser, validatorUploadImage, uploadMiddlewareMemory.single("image"), updateImage)
 
 // RUTA PATCH /movie/restore/{id}
 /**
@@ -223,6 +321,6 @@ router.patch("/:id", authUser,validatorUploadImage, uploadMiddlewareMemory.singl
 *                       schema:
 *                           $ref: "#/components/schemas/Errors/NotToken"
 */
-router.patch("/restore/:id",authUser,validatorRestoreMovie,restoreMovie)
+router.patch("/restore/:id", authUser, validatorRestoreMovie, restoreMovie)
 
 module.exports = router
