@@ -14,7 +14,7 @@ export default function MoviesList() {
         "Action", "Adventure", "Comedy", "Drama", "Horror", "Thriller",
         "Romance", "Science Fiction", "Fantasy", "Documentary", "Animation",
         "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical",
-        "War", "Family", "Sports", "Noir", "Superhero",
+        "War", "Family", "Sports", "Teen", "Superhero",
     ]);
     const [platformList] = useState([
         "Netflix", "Amazon Prime Video", "Disney Plus", "MAX", "Apple TV", "Movistar +", "Crunchyroll", "Tio Anime"

@@ -34,7 +34,7 @@ const movieSchema = new mongoose.Schema(
                 "War",
                 "Family",
                 "Sports",
-                "Noir",
+                "Teen",
                 "Superhero"
               ]
         },

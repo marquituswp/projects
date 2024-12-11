@@ -66,7 +66,9 @@ export default  function MovieDetails({ movieId }) {
 
                 <div>
                     <h3 className="text-2xl font-semibold">Genre</h3>
-                    <p className="text-lg text-gray-300">{movie.filmGenre}</p>
+                    {movie.filmGenre.map((genre, index) => {
+                        return <span key={index} className="text-lg text-gray-300">{genre}, </span>
+                    })}
                 </div>
 
                 <div>

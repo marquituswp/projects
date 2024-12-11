@@ -10,15 +10,17 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 const CreateMovieSchema = Yup.object().shape({
     title: Yup.string().required("Title is required").min(3, "Title too short"),
-    filmGenre: Yup.string().required("Genre is required").notOneOf([""], "Genre is required"),
+    filmGenre: Yup.array()
+        .min(1, "At least one genre is required")
+        .required("Genre is required"),
     actors: Yup.string()
         .required("Actors are required")
         .matches(/^[a-zA-Z0-9 ,]+$/, "Invalid characters"),
     date: Yup.date()
         .required("date is required"),
     platforms: Yup.array()
-    .min(1, "At least one platform is required")
-    .required("Platform is required"),
+        .min(1, "At least one platform is required")
+        .required("Platform is required"),
     poster: Yup.mixed().required("Poster is required"),
 });
 
@@ -28,7 +30,7 @@ export default function CreateMovie() {
         "Action", "Adventure", "Comedy", "Drama", "Horror", "Thriller",
         "Romance", "Science Fiction", "Fantasy", "Documentary", "Animation",
         "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical",
-        "War", "Family", "Sports", "Noir", "Superhero",
+        "War", "Family", "Sports", "Teen", "Superhero",
     ]);
     const [platformList] = useState([
         "Netflix", "Amazon Prime Video", "Disney Plus", "MAX", "Apple TV", "Movistar +", "Crunchyroll", "Tio Anime"
@@ -44,10 +46,8 @@ export default function CreateMovie() {
                 title: values.title,
                 date: values.date,
                 platforms: values.platforms,
-                actors: values.actors.split(",").map((actor) => actor.trim()), // Convierte el string en un array y elimina espacios
-                filmGenre: Array.isArray(values.filmGenre)
-                    ? values.filmGenre
-                    : [values.filmGenre], // Convierte en array si no lo es
+                actors: values.actors.split(",").map((actor) => actor.trim()),
+                filmGenre: values.filmGenre
             };
             console.log(body)
             const response = await fetch("http://localhost:3000/movie", {
@@ -180,52 +180,56 @@ export default function CreateMovie() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="filmGenre" className="block text-2xl font-semibold">
+                                    <label htmlFor="filmGenre" className="block text-2xl font-semibold mb-4">
                                         Genre
                                     </label>
-                                    <Field
-                                        as="select"
-                                        name="filmGenre"
-                                        className="w-40 h-10 border-b-2 text-gray-300 border-transparent bg-transparent rounded-lg p-2 focus:outline-none focus:border-blue-500"
-                                    >
-                                        <option className="text-black" value="" name="filmGenre">All Genres</option>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                         {genreList.map((genre) => (
-                                            <option key={genre} value={genre} className="text-black">
-                                                {genre}
-                                            </option>
+                                            <label
+                                                key={genre}
+                                                className="flex items-center space-x-2 text-lg text-white hover:text-gray-200 cursor-pointer"
+                                            >
+                                                <Field
+                                                    type="checkbox"
+                                                    name="filmGenre"
+                                                    value={genre}
+                                                    className="w-5 h-5 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                                                />
+                                                <span>{genre}</span>
+                                            </label>
                                         ))}
-                                    </Field>
+                                    </div>
                                     <ErrorMessage
                                         name="filmGenre"
                                         component="div"
-                                        className="text-red-500 text-sm"
+                                        className="text-red-500 text-sm mt-2"
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="platforms" className="block text-2xl font-semibold">
+                                    <label htmlFor="platforms" className="block text-2xl font-semibold mb-4">
                                         Platforms
                                     </label>
-                                    <div className="border-b-2 text-gray-300 border-transparent bg-transparent rounded-lg p-2">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                         {platformList.map((platform) => (
                                             <label
                                                 key={platform}
-                                                className="block text-lg text-gray-300"
+                                                className="flex items-center space-x-2 text-lg text-white hover:text-gray-200 cursor-pointer"
                                             >
                                                 <Field
                                                     type="checkbox"
                                                     name="platforms"
                                                     value={platform}
-                                                    className="mr-2"
+                                                    className="w-5 h-5 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                                                 />
-                                                {platform}
+                                                <span>{platform}</span>
                                             </label>
                                         ))}
                                     </div>
                                     <ErrorMessage
                                         name="platforms"
                                         component="div"
-                                        className="text-red-500 text-sm"
+                                        className="text-red-500 text-sm mt-2"
                                     />
                                 </div>
 

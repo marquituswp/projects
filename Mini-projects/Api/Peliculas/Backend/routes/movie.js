@@ -41,8 +41,10 @@ const { uploadMiddlewareMemory } = require("../utils/handleUpload")
 *           name: genre
 *           description: Filter movies by genre (must be one of the predefined values)
 *           schema:
-*             type: string
-*             enum: [ "Action", "Adventure", "Comedy", "Drama", "Horror", "Thriller", "Romance", "Science Fiction", "Fantasy", "Documentary", "Animation", "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical", "War", "Family", "Sports", "Noir", "Superhero" ]
+*             type: array
+*             items:
+*               type: string
+*             enum: [ "Action", "Adventure", "Comedy", "Drama", "Horror", "Thriller", "Romance", "Science Fiction", "Fantasy", "Documentary", "Animation", "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical", "War", "Family", "Sports", "Teen", "Superhero" ]
 *         - in: query
 *           name: order
 *           schema:
@@ -109,8 +111,10 @@ router.get("/", validateGetMovies, getMovies)
 *           name: genre
 *           description: Filter movies by genre (must be one of the predefined values)
 *           schema:
-*             type: string
-*             enum: [ "Action", "Adventure", "Comedy", "Drama", "Horror", "Thriller", "Romance", "Science Fiction", "Fantasy", "Documentary", "Animation", "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical", "War", "Family", "Sports", "Noir", "Superhero" ]
+*             type: array
+*             items:
+*               type: string
+*             enum: [ "Action", "Adventure", "Comedy", "Drama", "Horror", "Thriller", "Romance", "Science Fiction", "Fantasy", "Documentary", "Animation", "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical", "War", "Family", "Sports", "Teen", "Superhero" ]
 *         - in: query
 *           name: order
 *           schema:
