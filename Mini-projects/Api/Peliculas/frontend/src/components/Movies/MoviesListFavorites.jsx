@@ -16,6 +16,9 @@ export default function MoviesList() {
         "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical",
         "War", "Family", "Sports", "Noir", "Superhero",
     ]);
+    const [platformList] = useState([
+        "Netflix", "Amazon Prime Video", "Disney Plus", "MAX", "Apple TV", "Movistar +", "Crunchyroll", "Tio Anime"
+    ])
     const [isOrderedByScoring, setIsOrderedByScoring] = useState(false); // Estado para el orden
     const [messageError, setMessageError] = useState("")
 
@@ -83,6 +86,7 @@ export default function MoviesList() {
                         title: "",
                         date: "",
                         genre: "",
+                        platforms:"",
                         minScoring: "",
                     }}
                     onSubmit={(values) => {
@@ -91,6 +95,7 @@ export default function MoviesList() {
                             title: values.title,
                             date: values.date,
                             genre: values.genre,
+                            platforms: values.platforms,
                             order: isOrderedByScoring ? true : false,
                             minScoring: values.minScoring,
                         };
@@ -132,6 +137,21 @@ export default function MoviesList() {
                                     {genreList.map((genre) => (
                                         <option key={genre} value={genre} className="text-black">
                                             {genre}
+                                        </option>
+                                    ))}
+                                </Field>
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <label className="text-white">Platform</label>
+                                <Field
+                                    as="select"
+                                    name="platforms"
+                                    className="w-40 h-10 border-b-2 text-white border-transparent bg-transparent rounded-lg p-2 focus:outline-none focus:border-blue-500"
+                                >
+                                    <option className="text-black" value="">All platforms</option>
+                                    {platformList.map((platform) => (
+                                        <option key={platform} value={platform} className="text-black">
+                                            {platform}
                                         </option>
                                     ))}
                                 </Field>

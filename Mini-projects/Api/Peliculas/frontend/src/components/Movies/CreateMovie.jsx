@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import StarRating from "../StarRating";
+import handleAutoReview from "@/lib/handleAutoReview";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
@@ -15,6 +16,9 @@ const CreateMovieSchema = Yup.object().shape({
         .matches(/^[a-zA-Z0-9 ,]+$/, "Invalid characters"),
     date: Yup.date()
         .required("date is required"),
+    platforms: Yup.array()
+    .min(1, "At least one platform is required")
+    .required("Platform is required"),
     poster: Yup.mixed().required("Poster is required"),
 });
 
@@ -26,6 +30,9 @@ export default function CreateMovie() {
         "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical",
         "War", "Family", "Sports", "Noir", "Superhero",
     ]);
+    const [platformList] = useState([
+        "Netflix", "Amazon Prime Video", "Disney Plus", "MAX", "Apple TV", "Movistar +", "Crunchyroll", "Tio Anime"
+    ])
     const [imageFile, setImageFile] = useState(null); // Almacena el archivo seleccionado
     const [successMessage, setSuccessMessage] = useState(""); // Estado para el mensaje de éxito
     const { token } = useAuth()
@@ -36,6 +43,7 @@ export default function CreateMovie() {
             const body = {
                 title: values.title,
                 date: values.date,
+                platforms: values.platforms,
                 actors: values.actors.split(",").map((actor) => actor.trim()), // Convierte el string en un array y elimina espacios
                 filmGenre: Array.isArray(values.filmGenre)
                     ? values.filmGenre
@@ -56,11 +64,12 @@ export default function CreateMovie() {
                 setSuccessMessage("MOVIE CREATED")
                 handleUploadMoviePoster(imageFile, token, data._id)
                 setTimeout(() => {
+                    handleAutoReview(values.scoring, token, data._id)
                     resetForm();
                     setPreviewImage(null);
                     router.push("/")
-                }, 4000);
-                
+                }, 5000);
+
             } else {
                 setSuccessMessage("");
                 const errorText = await response.text();
@@ -91,8 +100,10 @@ export default function CreateMovie() {
                     initialValues={{
                         title: "",
                         filmGenre: "",
+                        platforms: "",
                         actors: "",
                         date: "",
+                        scoring: 0,
                         poster: "",
                     }}
                     validationSchema={CreateMovieSchema}
@@ -192,6 +203,33 @@ export default function CreateMovie() {
                                 </div>
 
                                 <div>
+                                    <label htmlFor="platforms" className="block text-2xl font-semibold">
+                                        Platforms
+                                    </label>
+                                    <div className="border-b-2 text-gray-300 border-transparent bg-transparent rounded-lg p-2">
+                                        {platformList.map((platform) => (
+                                            <label
+                                                key={platform}
+                                                className="block text-lg text-gray-300"
+                                            >
+                                                <Field
+                                                    type="checkbox"
+                                                    name="platforms"
+                                                    value={platform}
+                                                    className="mr-2"
+                                                />
+                                                {platform}
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <ErrorMessage
+                                        name="platforms"
+                                        component="div"
+                                        className="text-red-500 text-sm"
+                                    />
+                                </div>
+
+                                <div>
                                     <label htmlFor="date" className="block text-2xl font-semibold">
                                         Date
                                     </label>
@@ -203,6 +241,21 @@ export default function CreateMovie() {
                                     />
                                     <ErrorMessage
                                         name="date"
+                                        component="div"
+                                        className="text-red-500 text-sm"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="scoring" className="block text-2xl font-semibold">
+                                        Rating
+                                    </label>
+                                    <StarRating
+                                        value={values.scoring}
+                                        onChange={(value) => setFieldValue("scoring", value)}
+                                    />
+                                    <ErrorMessage
+                                        name="scoring"
                                         component="div"
                                         className="text-red-500 text-sm"
                                     />

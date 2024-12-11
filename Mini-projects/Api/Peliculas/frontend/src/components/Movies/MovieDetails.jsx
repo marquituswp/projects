@@ -65,6 +65,23 @@ export default async function MovieDetails({ movieId }) {
                     <p className="text-lg text-gray-300">{movie.filmGenre}</p>
                 </div>
 
+                <div>
+                    <h3 className="text-2xl font-semibold">Platforms</h3>
+                    {movie.platforms.map((platform, index) => {
+                        return <span key={index} className="text-lg text-gray-300">{platform}, </span>
+                    })}
+                </div>
+
+                <div>
+                    <h3 className="text-2xl font-semibold">Date</h3>
+                    <p className="text-lg text-gray-300">{new 
+                    Date(movie.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    })}</p>
+                </div>
+
                 <div className="flex items-center gap-4">
                     <h3 className="text-2xl font-semibold">Rating</h3>
                     <div className="text-lg text-gray-500 flex items-center">

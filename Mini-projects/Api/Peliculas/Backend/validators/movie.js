@@ -7,6 +7,7 @@ const validateGetMovies = [
     check("actor").optional().notEmpty(),
     check("genre").optional().notEmpty(),
     check("order").optional().notEmpty().isBoolean(),
+    check("platforms").optional().notEmpty(),
     check("minScoring").optional().notEmpty().isNumeric(),
 
     validateResults
@@ -42,6 +43,7 @@ const validateCreateMovie = [
     check("filmGenre").exists().notEmpty().isArray(),
     check("poster").optional().notEmpty(),
     check("filmGenre").optional().notEmpty(),
+    check("platforms").optional().notEmpty(),
     check("reviews").optional().notEmpty().isObject(),
     check("reviews.scoring").optional().notEmpty().isNumeric().custom(value => value >= 0 && value <= 5),
     check("reviews.points").optional().notEmpty().isNumeric(),

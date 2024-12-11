@@ -6,7 +6,7 @@ const stringSimilarity = require("string-similarity")
 
 const getMovies = async (req, res) => {
     try {
-        const {title, date, actor, genre, order, minScoring } = matchedData(req)
+        const { title, date, actor, genre, order, minScoring, platforms } = matchedData(req)
         let filters = {}
         if (title) {
             filters.title = { $regex: new RegExp(title, "i") }
@@ -26,6 +26,10 @@ const getMovies = async (req, res) => {
 
         if (minScoring) {
             filters["points"] = { $gte: parseFloat(minScoring) }
+        }
+
+        if (platforms) {
+            filters.platforms = { $in: platforms };
         }
 
         let sortOption = {};
@@ -63,7 +67,7 @@ const getMovie = async (req, res) => {
 
 const getFavorites = async (req, res) => {
     try {
-        const {title, date, actor, genre, order, minScoring } = matchedData(req)
+        const { title, date, actor, genre, order, minScoring, platforms } = matchedData(req)
         let filters = {}
         if (title) {
             filters.title = { $regex: new RegExp(title, "i") }
@@ -83,6 +87,10 @@ const getFavorites = async (req, res) => {
 
         if (minScoring) {
             filters["points"] = { $gte: parseFloat(minScoring) }
+        }
+
+        if (platforms) {
+            filters.platforms = { $in: platforms };
         }
 
         let sortOption = {};
@@ -122,10 +130,12 @@ const createMovie = async (req, res) => {
         const movie = matchedData(req)
         const existingTitles = (await movieModel.find()).map(movie => movie.title)
         const existingDates = (await movieModel.find()).map(movie => movie.date)
-        const similarity = stringSimilarity.findBestMatch(movie.title, existingTitles);
-        if (similarity.bestMatch.rating > 0.8 && movie.date.getTime() === existingDates[similarity.bestMatchIndex].getTime()) {
-            handleHttpError(res, "MOVIE_ALREADY_EXISTS", 400)
-            return
+        if (existingTitles.length > 0) {
+            const similarity = stringSimilarity.findBestMatch(movie.title, existingTitles);
+            if (similarity.bestMatch.rating > 0.8 && movie.date.getTime() === existingDates[similarity.bestMatchIndex].getTime()) {
+                handleHttpError(res, "MOVIE_ALREADY_EXISTS", 400)
+                return
+            }
         }
         const movieCreated = await movieModel.create(movie)
 

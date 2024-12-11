@@ -1,6 +1,6 @@
 module.exports = {
     type:"object",
-    require:["title","date","actors","poster","filmGenre"],
+    require:["title","date","actors","poster","filmGenre","platforms"],
     properties:{
         title:{
             type:"string",
@@ -17,7 +17,11 @@ module.exports = {
         filmGenre:{
             type:"array",
             example:["Superhero"]
-        }
+        },
+        platforms:{
+            type:"array",
+            example:["Netflix"]
+        },
     },
     MovieCreated:{
         type:"object",

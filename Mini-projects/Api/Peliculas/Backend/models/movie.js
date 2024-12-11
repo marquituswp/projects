@@ -60,7 +60,10 @@ const movieSchema = new mongoose.Schema(
         isFavorite:{
             type:Boolean,
             default: false
-        }
+        },
+        platforms:{
+            type:["Netflix", "Amazon Prime Video", "Disney Plus", "MAX", "Apple TV", "Movistar +", "Crunchyroll", "Tio Anime"]
+        },
     },
     {
         timestamps:true

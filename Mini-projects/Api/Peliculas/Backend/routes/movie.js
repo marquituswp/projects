@@ -30,6 +30,14 @@ const { uploadMiddlewareMemory } = require("../utils/handleUpload")
 *           schema:
 *             type: string
 *         - in: query
+*           name: platforms
+*           description: Filter movies by one or more platforms
+*           schema:
+*             type: array
+*             items:
+*               type: string
+*               enum: ["Netflix", "Amazon Prime Video", "Disney Plus", "MAX", "Apple TV", "Movistar +", "Crunchyroll", "Tio Anime"]
+*         - in: query
 *           name: genre
 *           description: Filter movies by genre (must be one of the predefined values)
 *           schema:
@@ -89,6 +97,14 @@ router.get("/", validateGetMovies, getMovies)
 *           description: Filter movies by actor name
 *           schema:
 *             type: string
+*         - in: query
+*           name: platforms
+*           description: Filter movies by one or more platforms
+*           schema:
+*             type: array
+*             items:
+*               type: string
+*               enum: ["Netflix", "Amazon Prime Video", "Disney Plus", "MAX", "Apple TV", "Movistar +", "Crunchyroll", "Tio Anime"]
 *         - in: query
 *           name: genre
 *           description: Filter movies by genre (must be one of the predefined values)

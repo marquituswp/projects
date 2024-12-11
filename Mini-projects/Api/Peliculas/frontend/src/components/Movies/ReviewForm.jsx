@@ -56,14 +56,13 @@ export default function ReviewMovie({ movieId }) {
                     }, 1000);
                 } else {
                     setErrors({
-                        general: "Unexpected response from the server.",
+                        general: "ERROR REVIEWING",
                     });
                 }
             } else {
                 setErrors({ general: "Invalid values" });
             }
-        } catch (error) {
-            console.error("Login Error:", error);
+        } catch {
             setErrors({
                 general: "An unexpected error occurred. Please try again.",
             });
