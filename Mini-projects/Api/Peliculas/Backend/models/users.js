@@ -22,7 +22,10 @@ const userSchema = new mongoose.Schema(
         role:{
             type:["admin","user"],
             default:"user"
-        }
+        },
+        profilePicture:{
+            type:String
+        },
     },
     {
         timestamps:true

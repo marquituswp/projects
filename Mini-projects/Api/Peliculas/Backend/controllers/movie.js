@@ -6,9 +6,12 @@ const stringSimilarity = require("string-similarity")
 
 const getMovies = async (req, res) => {
     try {
-        const { date, actor, genre, order, minScoring } = matchedData(req)
-
+        const {title, date, actor, genre, order, minScoring } = matchedData(req)
         let filters = {}
+        if (title) {
+            filters.title = { $regex: new RegExp(title, "i") }
+        }
+
         if (date) {
             filters.date = { $gte: new Date(date) }
         }
@@ -26,9 +29,7 @@ const getMovies = async (req, res) => {
         }
 
         let sortOption = {};
-        if (order === "asc") {
-            sortOption["points"] = 1;
-        } else if (order === "desc") {
+        if (order === "true") {
             sortOption["points"] = -1;
         }
 
@@ -62,7 +63,35 @@ const getMovie = async (req, res) => {
 
 const getFavorites = async (req, res) => {
     try {
-        const movies = await movieModel.find({ isFavorite: true })
+        const {title, date, actor, genre, order, minScoring } = matchedData(req)
+        let filters = {}
+        if (title) {
+            filters.title = { $regex: new RegExp(title, "i") }
+        }
+
+        if (date) {
+            filters.date = { $gte: new Date(date) }
+        }
+
+        if (actor) {
+            filters.actors = { $regex: new RegExp(actor, "i") }
+        }
+
+        if (genre) {
+            filters.filmGenre = { $in: [genre] }
+        }
+
+        if (minScoring) {
+            filters["points"] = { $gte: parseFloat(minScoring) }
+        }
+
+        let sortOption = {};
+        if (order === "true") {
+            sortOption["points"] = -1;
+        }
+        filters.isFavorite = true
+        const movies = await movieModel.find(filters).sort(sortOption)
+
         if (movies.length === 0) {
             handleHttpError(res, "NO_FAVORITES", 400)
             return
@@ -75,9 +104,9 @@ const getFavorites = async (req, res) => {
 
 const setFavorite = async (req, res) => {
     try {
-        const { id } = matchedData(req)
+        const { id, isFavorite } = matchedData(req)
         const movie = await movieModel
-            .findByIdAndUpdate({ _id: id }, { isFavorite: true }, { new: true })
+            .findByIdAndUpdate({ _id: id }, { isFavorite: isFavorite }, { new: true })
         if (!movie) {
             handleHttpError(res, "MOVIE_NOT_FOUND", 400)
             return
@@ -188,7 +217,7 @@ const updateImage = async (req, res) => {
         res.status(200).json({ message: "IMAGE_UPLOADED", movie: movie })
     } catch (err) {
         console.log(err)
-        handleHttpError(res, "ERROR_UPLOAD_COMPANY_IMAGE")
+        handleHttpError(res, "ERROR_UPLOAD_IMAGE")
     }
 }
 

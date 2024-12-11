@@ -73,6 +73,10 @@ module.exports = {
                     role:{
                         type:"array",
                         example:["user"]
+                    },
+                    profilePicture:{
+                        type:"string",
+                        example:"https://www.google.com"
                     }
                 }
             }

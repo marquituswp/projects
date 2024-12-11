@@ -14,6 +14,11 @@ const { uploadMiddlewareMemory } = require("../utils/handleUpload")
 *       summary: Get all Movies with optional filters
 *       parameters:
 *         - in: query
+*           name: title
+*           description: 
+*           schema:
+*             type: string
+*         - in: query
 *           name: date
 *           description: Release date of the movie (must be in format YYYY-MM-DD)
 *           schema:
@@ -67,6 +72,42 @@ router.get("/", validateGetMovies, getMovies)
 *       tags:
 *       - Movies
 *       summary: Get the favorite Movies
+*       parameters:
+*         - in: query
+*           name: title
+*           description: 
+*           schema:
+*             type: string
+*         - in: query
+*           name: date
+*           description: Release date of the movie (must be in format YYYY-MM-DD)
+*           schema:
+*             type: string
+*             format: date  
+*         - in: query
+*           name: actor
+*           description: Filter movies by actor name
+*           schema:
+*             type: string
+*         - in: query
+*           name: genre
+*           description: Filter movies by genre (must be one of the predefined values)
+*           schema:
+*             type: string
+*             enum: [ "Action", "Adventure", "Comedy", "Drama", "Horror", "Thriller", "Romance", "Science Fiction", "Fantasy", "Documentary", "Animation", "Musical", "Crime", "Mystery", "Western", "Historical", "Biographical", "War", "Family", "Sports", "Noir", "Superhero" ]
+*         - in: query
+*           name: order
+*           schema:
+*             type: string
+*             enum: ["false","true"]
+*           required: true
+*           description: Choose "true" to sort movies by scoring 
+*         - name: minScoring
+*           in: query
+*           description: Minimum scoring of the movie reviews
+*           schema:
+*             type: number
+*             enum: [1,2,3,4,5]
 *       security:
 *           - bearerAuth: []
 *       responses:
@@ -83,7 +124,7 @@ router.get("/", validateGetMovies, getMovies)
 *               schema:
 *                 $ref: "#/components/schemas/Errors/NoMovie"
 */
-router.get("/favorites", authUser, getFavorites)
+router.get("/favorites", authUser,validateGetMovies, getFavorites)
 
 
 // RUTA GET /movie/{id}

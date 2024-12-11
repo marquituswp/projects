@@ -2,11 +2,12 @@ const {userModel} = require("../models/index")
 const {matchedData} = require("express-validator")
 const {encrypt, compare} = require("../utils/handlePassword")
 const {tokenSign} = require("../utils/handleJwt")
+const { uploadToPinata } = require("../utils/handleUploadIPFS")
 const {handleHttpError} = require("../utils/handleError")
 
 const registerUser = async (req,res) =>{
     try{
-        req = matchedData(req)
+        req = matchedData(req)   
         const password = await encrypt(req.password)
         const body = {...req, password}
         const dataUser = await userModel.create(body)
@@ -51,4 +52,24 @@ const loginUser = async(req,res)=>{
     }
 }
 
-module.exports = {registerUser, loginUser}
+const uploadProfilePicture = async (req, res) => {
+    try {
+        const id = req.user._id
+        if (!userModel.findById(id)) {
+            handleHttpError(res, "USER_NOT_FOUND", 400)
+            return
+        }
+        const fileBuffer = req.file.buffer
+        const fileName = req.file.originalname
+        const pinataResponse = await uploadToPinata(fileBuffer, fileName)
+        const ipfsFile = pinataResponse.IpfsHash
+        const ipfs = `https://${process.env.PINATA_GATEWAY_URL}/ipfs/${ipfsFile}`
+        const user = await userModel.findOneAndUpdate({ _id: id }, { profilePicture: ipfs }, { new: true })
+        res.status(200).json({ message: "IMAGE_UPLOADED", user: user })
+    } catch (err) {
+        console.log(err)
+        handleHttpError(res, "ERROR_UPLOAD_IMAGE")
+    }
+}
+
+module.exports = {registerUser, loginUser,uploadProfilePicture}

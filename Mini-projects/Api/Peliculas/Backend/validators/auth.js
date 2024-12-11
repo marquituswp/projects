@@ -7,7 +7,6 @@ const validatorRegister = [
     check("email").exists().notEmpty().isEmail(),
     check("password").exists().notEmpty().isLength({min:8,max:16}),
     check("dateOfBirth").exists().notEmpty().isDate(),
-
     (req,res,next)=>{
         validateResults(req,res,next)
     }
@@ -21,5 +20,6 @@ const validateLogin = [
         validateResults(req,res,next)
     }
 ]
+
 
 module.exports = {validatorRegister,validateLogin}

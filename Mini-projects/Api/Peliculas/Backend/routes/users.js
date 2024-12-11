@@ -85,7 +85,7 @@ router.put("/role",authUser,checkRolUser(["admin"]),validateUpdateRole,modifyUse
 // RUTA PUT /users/{id}
 /**
 *   @openapi
-*   /users/{id}:
+*   /users:
 *   put:
 *       tags:
 *       - Users
@@ -93,13 +93,6 @@ router.put("/role",authUser,checkRolUser(["admin"]),validateUpdateRole,modifyUse
 *       description: Update all the information of the user
 *       security:
 *           - bearerAuth: []
-*       parameters:
-*           - in: path
-*             name: id
-*             schema: 
-*                type: string
-*             required: true
-*             description: The ID of the user want to update
 *       requestBody:
 *           content:
 *               application/json:
@@ -125,7 +118,7 @@ router.put("/role",authUser,checkRolUser(["admin"]),validateUpdateRole,modifyUse
 *                       schema:
 *                           $ref: "#/components/schemas/Errors/NotToken"
 */
-router.put("/:id",authUser,validateUpdateUser,modifyUsers)
+router.put("/",authUser,validateUpdateUser,modifyUsers)
 
 // RUTA DELETE /users/{id}
 /**

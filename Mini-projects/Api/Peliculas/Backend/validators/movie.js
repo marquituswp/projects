@@ -2,6 +2,7 @@ const {check} = require("express-validator")
 const validateResults = require("../utils/handleValidator")
 
 const validateGetMovies = [
+    check("title").optional().notEmpty().isString(),
     check("date").optional().notEmpty().isDate(),
     check("actor").optional().notEmpty(),
     check("genre").optional().notEmpty(),

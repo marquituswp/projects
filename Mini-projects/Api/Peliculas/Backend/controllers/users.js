@@ -17,22 +17,23 @@ const getUsers = async (req,res)=>{
 // Función para modificar un usuario
 const modifyUsers = async (req,res) =>{
     try{
-        const {id, ...body} = matchedData(req)
+        const {...body} = matchedData(req)
+        // Obtengo el id del usuario logueado desde el token
+        const id = req.user._id
+        // Compruebo que el usuario exista
         const user = await userModel.findById({_id:id})
         if(!user){
             handleHttpError(res,"USER_NOT_FOUND",403)
             return
         }
-        if (user.email !== req.user.email){
-            handleHttpError(res,"CAN'T_UPDATE_OTHERS",403)
-            return
-        }
+        // Compruebo si se ha modificado la contraseña, en caso afirmativo la encripto
         if(body.password){
             const hashedPassword = await encrypt(body.password)
             body.password = hashedPassword
         }
-        
+        // Actualizo el usuario
         const data = await userModel.findByIdAndUpdate(id,body,{new:true})
+
         res.status(200).json({message:"User updated",
             data:data
         })
