@@ -1,23 +1,27 @@
+"use client"
 import Image from "next/image"
 import HandlePoints from "@/components/Rating"
 import Link from "next/link"
-const getMovieId = async (id) => {
-    try {
-        let movie = null
-        await fetch(`http://localhost:3000/movie/${id}`)
-            .then(response => response.ok ? response.json() : response.text())
-            .then(data => {
-                movie = data
-            })
-        return movie
-    } catch {
-        return ("ERROR FETCHING DATA")
-    }
-}
+import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext"
 
-export default async function MovieDetails({ movieId }) {
-    const movie = await getMovieId(movieId)
+export default  function MovieDetails({ movieId }) {
+    const [movie,setMovie] = useState(null)
 
+    useEffect(()=>{
+        try {
+            
+             fetch(`http://localhost:3000/movie/${movieId}`)
+                .then(response => response.ok ? response.json() : response.text())
+                .then(data => {
+                    setMovie(data)
+                })
+        } catch {
+            return ("ERROR FETCHING DATA")
+        }
+    },[])
+
+    const {token} = useAuth()
     if (!movie) {
         return (
             <div className="flex justify-center items-center min-h-screen text-white">
@@ -44,12 +48,12 @@ export default async function MovieDetails({ movieId }) {
             </div>
 
             <div className="lg:col-span-2 space-y-6">
-                <div className="flex justify-between">
+                {token && <div className="flex justify-between">
                     <h1 className="text-5xl font-bold drop-shadow-lg text-yellow-400">
                         {movie.title}
                     </h1>
                     <Link href={`/movie/${movie._id}/leaveReview`} className={"btn"}>Leave a review</Link>
-                </div>
+                </div>}
 
 
                 <div>
