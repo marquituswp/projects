@@ -225,7 +225,7 @@ export default function MoviesList() {
                                         <Image
                                             src={movie.poster}
                                             alt={`${movie.title} poster`}
-                                            layout="fill"
+                                            fill
                                             objectFit="cover"
                                             className="rounded-md"
                                         />

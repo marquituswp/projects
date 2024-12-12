@@ -38,7 +38,7 @@ export default function NavBar() {
                                             Profile
                                         </Link>
                                     </li>
-                                    <li>
+                                    {tokenUser.role[0] === "admin" && <li>
                                         <Link
                                             href="/movie/create"
                                             className="block px-4 py-2 text-yellow-400 hover:bg-gray-700"
@@ -46,8 +46,8 @@ export default function NavBar() {
                                         >
                                             Create Movie
                                         </Link>
-                                    </li>
-                                    {tokenUser.role[0] === "admin" && <li>
+                                    </li>}
+                                    <li>
                                         <Link
                                             href="/movie/favorites"
                                             className="block px-4 py-2 text-yellow-400 hover:bg-gray-700"
@@ -55,7 +55,16 @@ export default function NavBar() {
                                         >
                                             Favorite Movies
                                         </Link>
-                                    </li>}
+                                    </li>
+                                    <li>
+                                        <Link
+                                            href="/movie/external"
+                                            className="block px-4 py-2 text-yellow-400 hover:bg-gray-700"
+                                            onClick={() => setMenuOpen(false)} // Cierra el menú
+                                        >
+                                            More Movies
+                                        </Link>
+                                    </li>
                                     <li>
                                         <button
                                             onClick={logout}

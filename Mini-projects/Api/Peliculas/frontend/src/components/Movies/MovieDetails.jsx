@@ -49,10 +49,10 @@ export default  function MovieDetails({ movieId }) {
 
             <div className="lg:col-span-2 space-y-6">
                 {token && <div className="flex justify-between">
-                    <h1 className="text-5xl font-bold drop-shadow-lg text-yellow-400">
+                    <h1 className="text-5xl font-bold drop-shadow-lg text-yellow-400 w-3/4">
                         {movie.title}
                     </h1>
-                    <Link href={`/movie/${movie._id}/leaveReview`} className={"btn"}>Leave a review</Link>
+                    <Link href={`/movie/${movie._id}/leaveReview`} className={"btn h-full"}>Leave a review</Link>
                 </div>}
 
 

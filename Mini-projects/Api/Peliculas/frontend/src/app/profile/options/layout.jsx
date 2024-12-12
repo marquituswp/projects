@@ -56,7 +56,7 @@ export default function ProfileLayout({ children }) {
                         src={user.profilePicture || "/default-profile.png"} // Imagen por defecto si no existe
                         alt={`${user.name}'s Profile Picture`}
                         className="rounded-full object-cover"
-                        layout="fill" // Asegura que la imagen llena el contenedor
+                        fill // Asegura que la imagen llena el contenedor
                     />
                 </div>
                 <h2 className="text-xl font-semibold text-yellow-400">{user.name}</h2>
