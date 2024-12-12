@@ -27,7 +27,6 @@ export default function MoviesList() {
             const validFilters = Object.fromEntries(
                 Object.entries(filters).filter(([_, value]) => value !== "" && value !== null)
             );
-            console.log(validFilters)
             // Construye la URL con los filtros como parámetros de consulta
             const queryParams = new URLSearchParams(validFilters).toString();
 

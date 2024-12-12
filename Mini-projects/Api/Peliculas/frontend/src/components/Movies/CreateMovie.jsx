@@ -49,7 +49,6 @@ export default function CreateMovie() {
                 actors: values.actors.split(",").map((actor) => actor.trim()),
                 filmGenre: values.filmGenre
             };
-            console.log(body)
             const response = await fetch("http://localhost:3000/movie", {
                 method: "POST",
                 headers: {

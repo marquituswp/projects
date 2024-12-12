@@ -13,7 +13,6 @@ export default function handleUploadProfilePicture(token, imageFile){
         })
         .then((response) => response.ok? response.json(): response.text())
         .then((data) => {
-            console.log(data)
             router.push("/"); // Redirige al home o dashboard
         })
         .catch((error) => {

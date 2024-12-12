@@ -27,7 +27,6 @@ export default function MovieListExternalApi() {
                     if (data.results) {
                         setMessageError("");
                         setMovies(data.results);
-                        console.log(data.results)
                     } else {
                         setMessageError("NO MOVIES");
                     }

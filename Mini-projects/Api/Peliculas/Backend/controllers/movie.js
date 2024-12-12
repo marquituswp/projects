@@ -218,7 +218,6 @@ const updateImage = async (req, res) => {
             handleHttpError(res, "MOVIE_NOT_FOUND", 400)
             return
         }
-        console.log(req)
         if (req.body.image){
             const movie = await movieModel.findOneAndUpdate({ _id: id }, { poster: req.body.image }, { new: true })
             res.status(200).json({ message: "IMAGE_UPLOADED", movie: movie })
@@ -226,7 +225,6 @@ const updateImage = async (req, res) => {
         }
         const fileBuffer = req.file.buffer
         const fileName = req.file.originalname
-        console.log(fileName)
         const pinataResponse = await uploadToPinata(fileBuffer, fileName)
         const ipfsFile = pinataResponse.IpfsHash
         const ipfs = `https://${process.env.PINATA_GATEWAY_URL}/ipfs/${ipfsFile}`

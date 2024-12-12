@@ -4,8 +4,6 @@ const handleAutoReview = async (scoring, token, movieId) => {
             review: "Auto review",
             scoring: scoring,
         };
-        console.log("body", body);
-        console.log("token", token);
         await fetch(
             `http://localhost:3000/users/reviewMovie/${movieId}`,
             {

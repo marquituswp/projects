@@ -34,7 +34,6 @@ export default function ModifyUser() {
             const body = {
                 ...values,
             };
-            console.log(body)
             // Si la contraseña no está vacía, añadirla al cuerpo del request
             if (values.password !== "") {
                 body.password = values.password;
@@ -62,13 +61,11 @@ export default function ModifyUser() {
                 })
                 .catch((error) => {
                     setSuccessMessage("");
-                    console.log(error)
                     setErrors({ general: "An error occurred while updating" });
                     setSubmitting(false);
                 });
         } catch (e) {
             setSuccessMessage("");
-            console.log(e)
             setErrors({ general: "An error occurred while updating" });
             setSubmitting(false);
         }

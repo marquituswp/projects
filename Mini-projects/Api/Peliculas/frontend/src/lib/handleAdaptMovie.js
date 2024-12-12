@@ -1,9 +1,10 @@
 "use client"
 import handleUploadMoviePoster from "./handleUploadMoviePoster";
+import stringSimilarity from "string-similarity";
 const fetchProviders = async (movie) => {
     const providers = [];
     try {
-        
+
         const url = `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers`;
         const options = {
             method: 'GET',
@@ -15,9 +16,30 @@ const fetchProviders = async (movie) => {
         const response = await fetch(url, options);
         const data = await response.json();
         if (data.results.ES) {
-            data.results.ES.map((provider) => {
-                providers.push(provider.provider_name);
-            });
+            const longitud = Object.keys(data.results.ES).length;
+    
+            if (longitud > 0) {
+                // Recorrer las claves del diccionario
+                Object.keys(data.results.ES).map((key) => {
+                    const provider = data.results.ES[key];
+                    if (Array.isArray(provider)) {
+                        provider.map((p) => {
+                            // Normalizar el nombre eliminando redundancias específicas
+                            const normalizedName = p.provider_name.replace(/Ficción Total/i, "").replace(/\s+/g, " ").trim();
+    
+                            // Verificar similitud con los nombres existentes en `providers`
+                            const isDuplicate = providers.some(existing => {
+                                const similarity = stringSimilarity.compareTwoStrings(normalizedName.toLowerCase(), existing.toLowerCase());
+                                return similarity > 0.8; // Considerar duplicado si la similitud es mayor al 80%
+                            });
+    
+                            if (!isDuplicate) {
+                                providers.push(normalizedName); // Agregar solo si no es duplicado
+                            }
+                        });
+                    }
+                });
+            }
         } else {
             providers.push("NO PLATFORMS");
         }
@@ -31,7 +53,7 @@ const fetchProviders = async (movie) => {
 const fetchGenres = async (movie) => {
     const genreList = [];
     try {
-        
+
         const url = `https://api.themoviedb.org/3/movie/${movie.id}?language=en-US`;
         const options = {
             method: 'GET',
@@ -81,7 +103,7 @@ const handleAdaptMovie = async (movie, token) => {
 
         if (response.ok) {
             const data = await response.json();
-            Message ="MOVIE ADDED";
+            Message = "MOVIE ADDED";
             handleUploadMoviePoster(`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`, token, data._id)
         } else {
             Message = "";
