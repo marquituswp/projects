@@ -5,13 +5,13 @@ import Link from "next/link"
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext"
 
-export default  function MovieDetails({ movieId }) {
-    const [movie,setMovie] = useState(null)
+export default function MovieDetails({ movieId }) {
+    const [movie, setMovie] = useState(null)
 
-    useEffect(()=>{
+    useEffect(() => {
         try {
-            
-             fetch(`http://localhost:3000/movie/${movieId}`)
+
+            fetch(`http://localhost:3000/movie/${movieId}`)
                 .then(response => response.ok ? response.json() : response.text())
                 .then(data => {
                     setMovie(data)
@@ -19,9 +19,9 @@ export default  function MovieDetails({ movieId }) {
         } catch {
             return ("ERROR FETCHING DATA")
         }
-    },[])
+    }, [])
 
-    const {token} = useAuth()
+    const { token } = useAuth()
     if (!movie) {
         return (
             <div className="flex justify-center items-center min-h-screen text-white">
@@ -31,7 +31,7 @@ export default  function MovieDetails({ movieId }) {
     }
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8 bg-gray-900 text-white relative">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8 bg-gray-900 text-white relative w-[1500px]">
 
             <div className="lg:col-span-1 flex flex-col justify-start items-center">
                 <div className="relative w-full max-w-md mb-20">
@@ -48,12 +48,25 @@ export default  function MovieDetails({ movieId }) {
             </div>
 
             <div className="lg:col-span-2 space-y-6">
-                {token && <div className="flex justify-between">
-                    <h1 className="text-5xl font-bold drop-shadow-lg text-yellow-400 w-3/4">
-                        {movie.title}
-                    </h1>
-                    <Link href={`/movie/${movie._id}/leaveReview`} className={"btn h-full"}>Leave a review</Link>
-                </div>}
+                {token && (
+                    <div className="flex items-center">
+                        {/* Título con ancho ajustado al tamaño del texto */}
+                        <h1 className="text-5xl font-bold drop-shadow-lg text-yellow-400 w-2/4">
+                            {movie.title}
+                        </h1>
+                        {/* Espaciador para separar el título de los botones */}
+                        <div className="flex-grow"></div>
+                        {/* Contenedor de botones que ocupa el espacio sobrante */}
+                        <div className="flex gap-2 items-end self-start">
+                            <Link href={`/movie/${movie._id}/leaveReview`} className="btn">
+                                Leave a review
+                            </Link>
+                            <Link href={`/movie/${movie._id}/delete`} className="btn bg-red-500 hover:bg-red-600">
+                                Delete Movie
+                            </Link>
+                        </div>
+                    </div>
+                )}
 
 
                 <div>
@@ -80,12 +93,12 @@ export default  function MovieDetails({ movieId }) {
 
                 <div>
                     <h3 className="text-2xl font-semibold">Date</h3>
-                    <p className="text-lg text-gray-300">{new 
-                    Date(movie.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    })}</p>
+                    <p className="text-lg text-gray-300">{new
+                        Date(movie.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })}</p>
                 </div>
 
                 <div className="flex items-center gap-4">

@@ -11,10 +11,6 @@ export default function handleUploadMoviePoster(imageFile, token, movieId){
             },
             body: formData,
         })
-        .then((response) => response.ok? response.json(): response.text())
-        .then((data) => {
-            router.push("/"); // Redirige al home o dashboard
-        })
         .catch((error) => {
             console.log(error)
         });

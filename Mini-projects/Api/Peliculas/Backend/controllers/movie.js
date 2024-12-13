@@ -133,7 +133,7 @@ const createMovie = async (req, res) => {
         if (existingTitles.length > 0) {
             const similarity = stringSimilarity.findBestMatch(movie.title, existingTitles);
             if (similarity.bestMatch.rating > 0.8 && movie.date.getTime() === existingDates[similarity.bestMatchIndex].getTime()) {
-                handleHttpError(res, "MOVIE_ALREADY_EXISTS", 400)
+                handleHttpError(res, "MOVIE ALREADY EXISTS", 400)
                 return
             }
         }
@@ -179,7 +179,7 @@ const deleteMovie = async (req, res) => {
             return
         }
     } catch (error) {
-        handleHttpError(res, "ERROR_DELETE_movie", 403)
+        handleHttpError(res, "ERROR_DELETE_MOVIE", 403)
     }
 
 }

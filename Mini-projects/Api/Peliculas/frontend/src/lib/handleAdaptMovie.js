@@ -91,7 +91,6 @@ const handleAdaptMovie = async (movie, token) => {
             actors: ["No Info"],
             filmGenre: genreList,
         };
-        console.log(body)
         const response = await fetch("http://localhost:3000/movie", {
             method: "POST",
             headers: {

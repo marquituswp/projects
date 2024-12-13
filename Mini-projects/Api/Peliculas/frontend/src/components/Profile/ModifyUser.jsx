@@ -181,7 +181,7 @@ export default function ModifyUser() {
                             )}
 
                             {errors.general && (
-                                <div className="mb-4 text-red-700 text-2xl font-bold text-center">
+                                <div className="mb-4 text-red-600 text-2xl font-bold text-center">
                                     {errors.general}
                                 </div>
                             )}
